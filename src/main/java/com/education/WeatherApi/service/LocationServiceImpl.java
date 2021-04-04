@@ -1,4 +1,8 @@
 package com.education.WeatherApi.service;
 
-public class LocationServiceImpl {
+import org.springframework.stereotype.Service;
+
+@Service
+public class LocationServiceImpl implements LocationService {
 }
+
