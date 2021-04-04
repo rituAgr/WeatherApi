@@ -14,9 +14,11 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
 import java.util.Date;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,7 +37,7 @@ public class WeatherApiApplicationTests {
 	private ObjectMapper objectMapper;
 
 	@Test
-	public void addTopicTest_Valid_200() throws Exception {
+	public void addWeatherTest_Valid_200() throws Exception {
 		Weather weather = new Weather(1L,new Date(1985-02-10),
 				new Location("Nashville", "Tennessee", 36.19F, -86.68F),
 				new Float[]{37.5F, 37.0F, 36.3F});
@@ -44,6 +46,17 @@ public class WeatherApiApplicationTests {
 		when(weatherService.add(weather)).thenReturn(weather);
 		mvc.perform(post("/weather").contentType(MediaType.APPLICATION_JSON).content(weatherJson)).
 				andExpect(status().isCreated());
+	}
+
+	@Test
+	public void getWeatherTest_Valid_200() throws Exception {
+		Long id =1L;
+		Weather weather = new Weather(1L,new Date(1985-02-10),
+				new Location("Nashville", "Tennessee", 36.19F, -86.68F),
+				new Float[]{37.5F, 37.0F, 36.3F});
+		when(weatherService.getAllWeather()).thenReturn(Collections.singletonList(weather));
+		mvc.perform(get("/weather",id)).
+				andExpect(status().isOk());
 	}
 
 }
